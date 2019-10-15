@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.dao.HiveTableDescMapper">
+
+    <resultMap id="HiveTableDescMap" type="com.manage.model.HiveTableDesc">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="db_table" jdbcType="VARCHAR" property="dbTable"/>
+        <result column="desc_contentMD" jdbcType="LONGVARCHAR" property="descContentMD"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="modify_by" jdbcType="VARCHAR" property="modifyBy"/>
+    </resultMap>
+
+    <select id="searchAll" resultMap="HiveTableDescMap">
+        select id,db_table,create_date,modify_date,create_by,modify_by
+        from test_hiveTable_desc
+    </select>
+
+    <select id="searchDesc" resultMap="HiveTableDescMap">
+        select id,db_table,desc_contentMD,create_date,modify_date,create_by,modify_by
+        from test_hiveTable_desc
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType = INTEGER}
+            </if>
+            <if test="dbTable">
+                AND db_table = #{dbTable, jdbcType = LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchDescCreatedBy" resultMap="HiveTableDescMap">
+        select db_table,create_by,modify_by
+        from test_hiveTable_desc
+        where create_by = #{createBy}
+    </select>
+
+    <insert id="createDesc" >
+        insert into test_hiveTable_desc
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dbTable != null">
+                db_table,
+            </if>
+            <if test="descContentMD != null">
+                desc_contentMD,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="modifyBy != null">
+                modify_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="dbTable != null">
+                #{dbTable,jdbcType=VARCHAR},
+            </if>
+            <if test="descContentMD != null">
+                #{descContentMD,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyBy != null">
+                #{modifyBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDesc">
+        UPDATE test_hiveTable_desc t
+        <set>
+            <if test="descContentMD != null">
+                t.`desc_contentMD` = #{descContentMD, jdbcType = LONGVARCHAR},
+            </if>
+            <if test="modifyBy != null">
+                t.`modify_by` = #{modifyBy, jdbcType = VARCHAR},
+            </if>
+            t.`modify_date` = CURRENT_TIMESTAMP,
+        </set>
+        WHERE t.`db_table` = #{dbTable, jdbcType = VARCHAR}
+    </update>
+
+
+    <delete id="deleteDesc">
+        delete from test_hiveTable_desc where db_table = #{dbTable, jdbcType = VARCHAR}
+    </delete>
+
+</mapper>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dbTable Description based on Markdown</title>
+    <script type="text/javascript" src="../js/marked.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <!--箭头等图标样式-->
+    <link href="../css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        #status{
+            display: block;
+            margin-bottom: 15px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .dataSet_container{
+            position: relative;
+            height: auto;
+            margin: 32px auto;
+            max-width: 950px;
+            width: 100%;
+        }
+
+        .content-box_title-bar{
+            box-sizing: border-box;
+            height: 48px;
+            width: auto;
+            background-color: #fbfbfb;
+            border: 1px solid #dedfe0;
+            border-bottom-color: rgba(222,223,224,.5);
+            border-radius: 4px 4px 0 0;
+            padding: 8px 24px;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+        }
+        .contentTitle{
+            align-self: center;
+            text-align: left;
+            max-width: 100%;
+            font-family: "Atlas Grotesk", sans-serif;
+            color: rgba(0,0,0,0.4);
+            font-weight: 500;
+            font-size: 14px;
+            flex: 1 1 auto;
+            overflow: hidden;
+        }
+        .content-box__right-side {
+            font-size: 14px;
+            margin-left: 8px;
+            flex: 0 1 auto;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .jyhbDO {
+            margin-left: 8px;
+            flex: 0 0 auto;
+        }
+        .gECrJu {
+            background-color: white;
+            color: rgb(169, 169, 169);
+        }
+        .dDfMPl {
+            background-color: rgb(255, 255, 255);
+            color: rgb(110, 110, 110);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 400;
+            height: 12px;
+            margin-left: 8px;
+            text-align: center;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(235, 236, 236);
+            border-image: initial;
+            border-radius: 4px;
+            padding: 6px;
+        }
+        .ModifyDesc_Bar_Inner:hover{
+            background-color: rgba(225, 226, 227, 0.5);
+        }
+
+
+        .content-box_content-section{
+            font-family: "Atlas Grotesk", sans-serif;
+            border-radius: 0 0 4px 4px;
+            border: 1px solid #dedfe0;
+            border-top: none;
+            box-sizing: border-box;
+            flex: 1 0 auto;
+            font-size: 14px;
+            font-weight: 400;
+            min-height: 40px;
+            width: auto;
+        }
+        .Description_contentWrapper{
+            position: relative;
+            color: rgba(0,0,0,0.7);
+        }
+        .Description_content_GIU{
+            max-height: 200px;
+            position: relative;
+            padding: 24px;
+            overflow: hidden;
+            transition: max-height 1s ease 0s;
+        }
+        .Description_content_GIU:after{
+            content: "";
+            position: absolute;
+            top: 80px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255));
+        }
+        .Description_content_GIU_ex{
+            max-height: unset;
+            position: relative;
+            padding: 24px;
+            overflow: hidden;
+            transition: max-height 1s ease 0s;
+        }
+
+        .Description_contentInner{
+            font-family: Atlas Grotesk,sans-serif;
+            box-sizing: border-box;
+            color: rgba(0,0,0,.7);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            text-align: left;
+            max-width: 100%;
+            position: relative;
+            word-break: break-word;
+        }
+        .Description_contentInner p:first-child,.Description_contentInner h1:first-child, .Description_contentInner h2:first-child, .Description_contentInner h3:first-child {
+            margin-top: 1px;
+        }
+        .Description_contentInner p:not(:last-child) {
+            margin-bottom: 10.5px;
+        }
+        .Description_contentInner p {
+            margin: 10.5px 0 0;
+        }
+
+        .Description_expand{
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            border-top: 1px solid rgb(235, 236, 236);
+            padding: 12px 24px;
+            background: rgb(255, 255, 255);
+
+        }
+        .Description_expand:hover{
+            background-color: rgba(225, 226, 227, 0.5);
+        }
+
+    </style>
+    <script>
+        $(function(){
+            var url = location.search;
+            var str, dbTable, userName;
+            if (url.indexOf("?") != -1) {
+                str = url.substr(1).split("&");
+                dbTable = decodeURIComponent(str[0].replace("dbTable=",""));
+                userName = decodeURIComponent(str[1].replace("userName=",""));
+            }
+
+            // Markdown 基本设置
+            var rendererMD = new marked.Renderer();
+            marked.setOptions({
+                renderer: rendererMD,
+                gfm: true,
+                tables: true,
+                breaks: true,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: true
+            });
+            // code 渲染
+            // marked.setOptions({
+            //     highlight: function (code) {
+            //         return hljs.highlightAuto(code).value;
+            //     }
+            // });
+
+            // 访问数据库
+            $.ajax({
+                type: "post",  //数据提交方式（post/get）
+                url: "../user/DescriptionContentShow",  //提交到的url
+                data: {dbTable : dbTable},
+                //提交的数据
+                dataType: "json",//返回的数据类型格式
+                success: function(mes){
+                    // $("#status").text(data.status);
+                    if (mes.result="success"){
+                        $("#status")
+                            .addClass("success")
+                            .html("STATUS: " + mes.message);
+                        var jsonData = JSON.parse(JSON.stringify(mes.data));
+                        // var des = jsonData.descContentMD.replace('<br>','\r\n'); //转换格式
+                        var des = jsonData.descContentMD;
+                        $("#ShowContent")
+                            .html(marked(des));
+                        // document.getElementById("ShowContent").innerHTML =
+                        //     marked(jsonData.descContentMD);
+                    }else{
+                        $("#status")
+                            .addClass("error")
+                            .html("STATUS: " + mes.message)
+                    }
+                }
+            });
+
+            $(".Description_expand").click(function(){
+                if ($(".Description_contentWrapper").children().hasClass("Description_content_GIU")) {
+                    $(".Description_content_GIU")
+                        .attr("class","Description_content_GIU_ex");
+                    $(".Description_expand_angle.fa.fa-angle-down")
+                        .attr("class","Description_expand_angle fa fa-angle-up")
+                        .attr("name","angle-up");
+
+                }else{
+                    $(".Description_content_GIU_ex")
+                        .attr("class","Description_content_GIU");
+                    $(".Description_expand_angle.fa.fa-angle-up")
+                        .attr("class","Description_expand_angle fa fa-angle-down")
+                        .attr("name","angle-down");
+                }
+            });
+            $("[name='arrows-modify']").click(function(){
+                var hrefLink = "EditDesc.html?dbTable=" + dbTable + "&userName=" +userName;
+                var tempWindow = window.open("_blank");
+                tempWindow.location = hrefLink;
+
+            });
+
+        });
+    </script>
+
+
+</head>
+
+<body>
+<div class="dataSet_container">
+
+<div class="content_status_bar">
+    <div class="content_status_state" id="status"></div>
+</div>
+<div class="content-box">
+    <div>
+        <div class="content-box_title-bar">
+            <div class="contentTitle" style="line-height: 46px;">Description</div>
+            <div class="content-box__right-side">
+                <div class="ModifyDesc_Bar jyhbDO">
+                    <span name="arrows-modify" class="ModifyDesc_Bar_Inner dDfMPl gECrJu fa fa-file-text-o"> Modify</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-box_content-section">
+        <div class="Description_contentWrapper">
+            <div class="Description_content_GIU">
+                <div class="Description_contentInner" id="ShowContent">
+                </div>
+            </div>
+            <div class="Description_expand">
+                <span name="angle-down" class="Description_expand_angle fa fa-angle-down">
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

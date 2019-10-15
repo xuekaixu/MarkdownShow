@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <title>Markdown Edit</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/editormd.css" />
+    <!--<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />-->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/editormd.min.js"></script>
+
+    <style type="text/css">
+        #status{
+            display: none;
+            color: red;
+            margin-bottom: 15px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .input_parameter{
+            vertical-align: middle;
+            display: inline-table;
+            border-collapse: separate;
+            font-size: 14px;
+            line-height: 1;
+            width: 200px;
+            border-spacing: 0;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+            border: 1px solid #c4c6cf;
+            background-color: #fff;
+            box-sizing: border-box;
+            height: 32px;
+            border-radius: 3px;
+        }
+    </style>
+    <script>
+        var testEditor;
+
+        $(function(){
+            //ajax访问后台controller--DescriptionContentShow，请求对应dbTable的描述性文字（description）
+            testEditor = editormd("test-editormd", {
+                width   : "90%",
+                height  : 600,
+                syncScrolling : "single",
+                path    : "../lib/",
+                // saveHTMLToTextarea : true//注意3：这个配置，textarea可以提交
+            });
+
+            $("#CreateMarkdownContent").click(function(){
+                editormd.loadPlugin("../js/MyPlugin/MyPlugin", function(){
+                    editormd.createDescription();
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<div id="layout">
+    <header>
+        <h1>Create a New Description</h1>
+    </header>
+
+    <div class="btns">
+        dbTable：<input  class="input_parameter" type="text" id="to_dbTable" />
+        UserName: <input class="input_parameter" type="text" id="to_UserName" />
+        <button id="CreateMarkdownContent" type="button">Create Description</button>
+        <div id="status"></div>
+    </div>
+    <div id="test-editormd">
+<textarea style="display:none;" ># Marked in the browser
+**InPut your text here**
+</textarea>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>Markdown Edit</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/editormd.css" />
+    <!--<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />-->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/editormd.min.js"></script>
+
+    <style type="text/css">
+        #status{
+            display: none;
+            color: red;
+            margin-bottom: 15px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+    </style>
+    <script>
+        var testEditor;
+
+        $(function(){
+
+            var url = location.search;
+            var str, dbTable, userName;
+            if (url.indexOf("?") != -1) {
+                str = url.substr(1).split("&");
+                dbTable = decodeURIComponent(str[0].replace("dbTable=",""));
+                userName = decodeURIComponent(str[1].replace("userName=",""));
+            }
+            // Title
+            $("header").find("h1").append(dbTable);
+
+            //ajax访问后台controller--DescriptionContentShow，请求对应dbTable的描述性文字（description）
+            $.ajax({
+                type: "post",  //数据提交方式（post/get）
+                url: "../user/DescriptionContentShow",  //提交到的url
+                data: {dbTable : dbTable},
+                //提交的数据
+                dataType: "json",//返回的数据类型格式
+                success: function(mes){
+                    // $("#status").text(data.status);
+                    if (mes.result="success"){
+                        var jsonData = JSON.parse(JSON.stringify(mes.data));
+                        // var des = jsonData.descContentMD.replace('<br>','\r\n'); //转换格式
+                        var des = jsonData.descContentMD;
+                        $("#test-editormd>textarea").val(des);
+
+                        // document.getElementById("ShowContent").innerHTML =
+                        //     marked(jsonData.descContentMD);
+                    }
+
+                }
+            });
+
+            testEditor = editormd("test-editormd", {
+                width   : "90%",
+                height  : 600,
+                syncScrolling : "single",
+                path    : "../lib/",
+                // saveHTMLToTextarea : true//注意3：这个配置，textarea可以提交
+
+            });
+
+            $("#saveMarkdownContent").click(function(){
+                editormd.loadPlugin("../js/MyPlugin/MyPlugin", function(){
+                    editormd.saveMarkdownContent(dbTable,userName);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="layout">
+    <header>
+        <h1>Update the Description of the dbTable: </h1>
+    </header>
+
+    <div class="btns">
+        <button id="saveMarkdownContent" type="button">Save the Contents</button>
+        <div id="status"></div>
+    </div>
+    <div id="test-editormd">
+<textarea style="display:none;">[TOC]
+
+#### Disabled options
+
+- TeX (Based on KaTeX);
+- Emoji;
+- Task lists;
+</textarea>
+    </div>
+</div>
+
+</body>
+</html>
