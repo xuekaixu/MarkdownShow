@@ -7,6 +7,7 @@
     <script src="../js/jquery.min.js"></script>
     <!--箭头等图标样式-->
     <link href="../css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--css样式-->
     <style type="text/css">
         #status{
             display: block;
@@ -165,6 +166,7 @@
     </style>
     <script>
         $(function(){
+            // url解析，获取dbTable和username
             var url = location.search;
             var str, dbTable, userName;
             if (url.indexOf("?") != -1) {
@@ -192,7 +194,7 @@
             //     }
             // });
 
-            // 访问数据库
+            // 访问数据库，获取Description文件
             $.ajax({
                 type: "post",  //数据提交方式（post/get）
                 url: "../user/DescriptionContentShow",  //提交到的url
@@ -220,6 +222,7 @@
                 }
             });
 
+            //控制按键--收缩以及展开Desc内容--css控制
             $(".Description_expand").click(function(){
                 if ($(".Description_contentWrapper").children().hasClass("Description_content_GIU")) {
                     $(".Description_content_GIU")
@@ -227,7 +230,6 @@
                     $(".Description_expand_angle.fa.fa-angle-down")
                         .attr("class","Description_expand_angle fa fa-angle-up")
                         .attr("name","angle-up");
-
                 }else{
                     $(".Description_content_GIU_ex")
                         .attr("class","Description_content_GIU");
@@ -236,6 +238,8 @@
                         .attr("name","angle-down");
                 }
             });
+
+            //跳转Modify界面
             $("[name='arrows-modify']").click(function(){
                 var hrefLink = "EditDesc.html?dbTable=" + dbTable + "&userName=" +userName;
                 var tempWindow = window.open("_blank");
@@ -251,11 +255,12 @@
 
 <body>
 <div class="dataSet_container">
-
+    <!--反馈查询状态success／fail-->
 <div class="content_status_bar">
     <div class="content_status_state" id="status"></div>
 </div>
 <div class="content-box">
+    <!--标题以及Modify按键-->
     <div>
         <div class="content-box_title-bar">
             <div class="contentTitle" style="line-height: 46px;">Description</div>
@@ -266,12 +271,14 @@
             </div>
         </div>
     </div>
+    <!--显示desc-->
     <div class="content-box_content-section">
         <div class="Description_contentWrapper">
             <div class="Description_content_GIU">
                 <div class="Description_contentInner" id="ShowContent">
                 </div>
             </div>
+            <!--缩放按键-->
             <div class="Description_expand">
                 <span name="angle-down" class="Description_expand_angle fa fa-angle-down">
                 </span>

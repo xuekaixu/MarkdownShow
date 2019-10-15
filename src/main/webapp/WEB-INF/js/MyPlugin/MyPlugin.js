@@ -16,7 +16,7 @@
 		var $            = jQuery;           // if using module loader(Require.js/Sea.js).
 
         exports.saveMarkdownContent = function(dbTable,userName){
-            //关键js代码--格式转换
+            //获取输入文本
             var text = $("#test-editormd>textarea").val();
 
             // var des = text.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '); //转换格式
@@ -51,7 +51,7 @@
             });
         };
         exports.createDescription = function(){
-            //关键js代码--格式转换
+            //读取参数
             var text = $("#test-editormd>textarea").val();
             var dbTable = $.trim($("#to_dbTable").val());
             var userName = $.trim($("#to_UserName").val());

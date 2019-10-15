@@ -36,7 +36,7 @@
     	<td>${c.modifyBy}</td>
     	<td>
     	<a href="../html/ShowDesc.html?dbTable=${c.dbTable}&userName=${c.createBy}">Search</a>
-		<a href="../html/EditDesc.html?dbTable=${c.dbTable}&userName=${c.createBy}">Update</a>
+		<a href="../html/EditDesc.html?dbTable=${c.dbTable}&userName=${c.createBy}">Modify</a>
 		</td>
     </tr>
     </c:forEach>
