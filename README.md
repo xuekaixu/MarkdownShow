@@ -1,7 +1,7 @@
 # showMDModule
 This is a project based on the `marked.js`. In the back-end, we use the `ssm-maven` struction to save the text to the sql. In the front-end, we use `marked,js` to convert the text into markdown format
 
-## Introduction
+## 1. Introduction
 目的：设计了一个description文本的展示模块：
 1. 本模块为实现一个基于markdown的文本展示功能，展示效果如图1所示，展示界面包含了Markdown的展示，缩放按钮，文本收缩后的虚化
 
@@ -9,7 +9,7 @@ This is a project based on the `marked.js`. In the back-end, we use the `ssm-mav
 
 2. 功能包括了文本文件的markdown显示、存储、修改和创建功能，包括了前端和后端代码。其中后端代码基于`ssm-maven`开发，实现与数据库的交互；前端代码基于`marked.js`开发，实现页面显示。
 
-## 前端界面
+## 2. 前端界面
 前端界面包括了：1.数据库文件的索引界面；2.文本的MD展示界面；3.文本的修改界面；4.文本的创建界面
 
 1. 索引界面：
@@ -43,7 +43,7 @@ This is a project based on the `marked.js`. In the back-end, we use the `ssm-mav
 * 创建按键
 
 
-## 后端模块
+## 3. 后端模块
 结构图如下：
 
 <p>
@@ -58,6 +58,6 @@ This is a project based on the `marked.js`. In the back-end, we use the `ssm-mav
 * service包含处理请求类
 * controller包含前端请求调度类
 
-## 本模块所引用的开源代码
+## 4. References--本模块所引用的开源代码
 1. marked.js--[https://github.com/markedjs/marked](https://github.com/markedjs/marked)
 2. editormd.js--[https://github.com/pandao/editor.md](https://github.com/pandao/editor.md)
