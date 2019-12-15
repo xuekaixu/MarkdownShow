@@ -46,10 +46,12 @@ This is a project based on the `marked.js`. In the back-end, we use the `ssm-mav
 ## 后端模块
 结构图如下：
 
-![Structure](https://raw.githubusercontent.com/xuekaixu/MarkdownShow/master/Pictures/structureFig.png)
+<p>
+	<img src="https://raw.githubusercontent.com/xuekaixu/MarkdownShow/master/Pictures/structureFig.png" alt="Sample"  height="300">
+	</p>
+</p>
 
 * 采用ssm+maven结构，主要的模块包括：model、util、dao、service、controller模块。
-
 * model包含一个对象类：`HiveTableDesc`，属性和sql表中的字段类似
 * util包含一个日期转换帮助类：`DateUtil`，实现日期格式转换
 * dao包含一个sql映射的接口类
