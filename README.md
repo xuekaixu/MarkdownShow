@@ -1,5 +1,5 @@
 # showMDModule
-This is a project based on the `marked.js`. In the back-end, we use the `ssm-maven` struction to save the text to the sql. In the front-end, we use `marked,js` to convert the text into markdown format
+This is a project based on the `marked.js`. In the back-end, we use the `ssm-maven` struction to save the text to the sql. In the front-end, we use `marked,js` to convert the text into markdown format.
 
 ## 1. Introduction
 目的：设计了一个description文本的展示模块：
@@ -58,6 +58,6 @@ This is a project based on the `marked.js`. In the back-end, we use the `ssm-mav
 * service包含处理请求类
 * controller包含前端请求调度类
 
-## 4. References--本模块所引用的开源代码
+## 4. References--本模块所用到的开源代码
 1. marked.js--[https://github.com/markedjs/marked](https://github.com/markedjs/marked)
 2. editormd.js--[https://github.com/pandao/editor.md](https://github.com/pandao/editor.md)
